@@ -70,24 +70,23 @@ app.post('/home', async (req, res) => {
     }
 });
 
-app.post('/add/:id', async (rep, res) => {
+app.post('/add/:id', async (req, res) => {
     try {
         const { electric, water, ePrice, wPrice } = req.body;
-        const data = new Home({ electric, water, ePrice, wPrice });
-        await data.collection.updateOne({ id: id },
-            {
-                $push: {
-                    "electric": electric,
-                    "water": water,
-                    "ePrice": ePrice,
-                    "wPrice": wPrice
-                }
-            })
+        const id = req.params.id;
+        await Home.updateOne({ id: id }, {
+            $push: {
+                "electric": electric,
+                "water": water,
+                "ePrice": ePrice,
+                "wPrice": wPrice
+            }
+        });
         res.json(data);
     } catch (error) {
         res.json(error);
     }
-})
+});
 
 app.put('/home/:id', async (req, res) => {
     try {
