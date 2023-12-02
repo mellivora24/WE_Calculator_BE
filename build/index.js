@@ -37,32 +37,27 @@ app.get('/', (req, res) => {
   res.send('<h1>Server is running...check with Postman!<h1>');
 });
 
-app.get('/home', async (req, res) => {
+app.get('/home/:phone/:pass', async (req, res) => {
     try {
-        const data = await Home.find();
+        const phone = req.params.phone;
+        const pass = req.params.pass;
+
+        const data = await Home.find({
+            phone: phone,
+            pass: pass
+        })
+
         res.json(data);
+        
     } catch (error) {
-        res.json(error);
+        res.status(401).json({ error: 'Wrong password' });
     }
 });
 
-app.get('/name', async (req, res) => {
+app.post('/add-account', async (req, res) => {
     try {
-        const listName = [];
-        const data = await Home.find();
-        data.forEach((x) => {
-            listName.push(x.name);
-        });
-        res.json(listName);
-    } catch (error) {
-        res.json(error);
-    }
-});
-
-app.post('/home', async (req, res) => {
-    try {
-        const { name, phone, email, used } = req.body;
-        const data = new Home({ name, phone, email, used });
+        const { name, phone, email, pass, used } = req.body;
+        const data = new Home({ name, phone, email, pass, used });
         await data.save();
         res.json(data);
     } catch (error) {
@@ -70,7 +65,7 @@ app.post('/home', async (req, res) => {
     }
 });
 
-app.post('/add/:id', async (req, res) => {
+app.post('/add-data/:id', async (req, res) => {
     try {
         const { electric, water, ePrice, wPrice } = req.body;
         const id = req.params.id;
@@ -99,7 +94,7 @@ app.post('/add/:id', async (req, res) => {
     }
 });
 
-app.put('/home/:id', async (req, res) => {
+app.put('/update/:id', async (req, res) => {
     try {
         await Home.updateOne({ _id: req.params.id }, req.body);
         res.json(req.body);
@@ -108,7 +103,7 @@ app.put('/home/:id', async (req, res) => {
     }
 });
 
-app.delete('/home/:id', async (req, res) => {
+app.delete('/remove/:id', async (req, res) => {
     try {
         const id = req.params.id;
         await Home.deleteOne({ _id: id });
@@ -118,6 +113,7 @@ app.delete('/home/:id', async (req, res) => {
         res.json(error);
     }
 });
+
 
 app.listen(PORT, () => {
     console.log(`Server is running http://127.0.0.1:${PORT}`);
