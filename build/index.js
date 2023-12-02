@@ -74,17 +74,28 @@ app.post('/add/:id', async (req, res) => {
     try {
         const { electric, water, ePrice, wPrice } = req.body;
         const id = req.params.id;
-        await Home.updateOne({ id: id }, {
-            $push: {
-                "electric": electric,
-                "water": water,
-                "ePrice": ePrice,
-                "wPrice": wPrice
-            }
-        });
-        res.json(data);
+
+        const home = await Home.findById(id);
+
+        if (!home) {
+            return res.status(404).json({ error: 'Không tìm thấy đối tượng Home' });
+        }
+
+        const newRecord = {
+            recordTime: new Date(),
+            electric,
+            water,
+            ePrice,
+            wPrice
+        };
+
+        home.used.push(newRecord);
+
+        await home.save();
+
+        res.json({ message: 'Dữ liệu đã được cập nhật thành công' });
     } catch (error) {
-        res.json(error);
+        res.status(500).json({ error: error.message });
     }
 });
 
