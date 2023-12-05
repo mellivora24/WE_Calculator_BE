@@ -33,28 +33,20 @@ var connectDB = async () => {
 
 connectDB();
 
-app.get('/', (req, res) => {
-  res.send('<h1>Server is running...check with Postman!<h1>');
-});
 app.get('/time', (req, res) => {
     const currentTime = new Date();
+    const timeZone = 'Asia/Ha_Noi';
     const data = {
-        time: formatTime(currentTime),
-        date: formatDate(currentTime)
+        time: formatTime(currentTime, timeZone),
+        date: formatDate(currentTime, timeZone)
     };
     res.json(data);
 });
-function formatTime(date) {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
-    return `${hours}:${minutes}:${seconds}`;
+function formatTime(date, timeZone) {
+    return date.toLocaleString('en-US', { timeZone, hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
 }
-function formatDate(date) {
-    const year = date.getFullYear().toString().slice(2);
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${day}/${month}/${year}`;
+function formatDate(date, timeZone) {
+    return date.toLocaleString('en-US', { timeZone,day: '2-digit', month: '2-digit',year: '2-digit'}).replace(/\//g, '-');
 }
 
 app.get('/home/:phone/:pass', async (req, res) => {
