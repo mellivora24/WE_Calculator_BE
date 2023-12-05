@@ -43,7 +43,7 @@ app.get('/time', (req, res) => {
     res.json(data);
 });
 function formatTime(date, timeZone) {
-    return date.toLocaleString('en-US', { timeZone, hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    return date.toLocaleString('en-US', { timeZone, hour12: false, hour: '2-digit'});
 }
 function formatDate(date, timeZone) {
     return date.toLocaleString('en-US', { timeZone,day: '2-digit', month: '2-digit',year: '2-digit'}).replace(/\//g, '-');
