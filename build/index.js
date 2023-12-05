@@ -36,6 +36,26 @@ connectDB();
 app.get('/', (req, res) => {
   res.send('<h1>Server is running...check with Postman!<h1>');
 });
+app.get('/time', (req, res) => {
+    const currentTime = new Date();
+    const data = {
+        time: formatTime(currentTime),
+        date: formatDate(currentTime)
+    };
+    res.json(data);
+});
+function formatTime(date) {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    return `${hours}/${minutes}/${seconds}`;
+}
+function formatDate(date) {
+    const year = date.getFullYear().toString().slice(2);
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}/${month}/${day}`;
+}
 
 app.get('/home/:phone/:pass', async (req, res) => {
     try {
