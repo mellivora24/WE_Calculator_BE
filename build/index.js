@@ -48,13 +48,13 @@ function formatTime(date) {
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
-    return `${hours}/${minutes}/${seconds}`;
+    return `${hours}:${minutes}:${seconds}`;
 }
 function formatDate(date) {
     const year = date.getFullYear().toString().slice(2);
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
-    return `${year}/${month}/${day}`;
+    return `${day}/${month}/${year}`;
 }
 
 app.get('/home/:phone/:pass', async (req, res) => {
