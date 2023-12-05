@@ -35,7 +35,7 @@ connectDB();
 
 app.get('/time', (req, res) => {
     const currentTime = new Date();
-    const timeZone = 'Asia/Ha_Noi';
+    const timeZone = 'Asia/Ho_Chi_Minh';
     const data = {
         time: formatTime(currentTime, timeZone),
         date: formatDate(currentTime, timeZone)
